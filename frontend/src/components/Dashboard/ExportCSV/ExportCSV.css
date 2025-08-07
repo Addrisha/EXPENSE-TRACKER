@@ -1,0 +1,18 @@
+.export-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.csv-btn {
+    background-color: #007bff;
+    padding: 10px 20px;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.3s;
+}
+
+.csv-btn:hover {
+    background-color: #0056b3;
+}
