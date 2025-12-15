@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './LoginForm.css';
 
-const LoginForm = () => {
+const LoginForm = ({ setAuthenticated }) => {   // ✅ RECEIVE PROP
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -27,15 +27,13 @@ const LoginForm = () => {
                     email: formData.email,
                     password: formData.password
                 },
-                {
-                    withCredentials: true // 🔐 To receive HTTP-only cookie
-                }
+                { withCredentials: true }
             );
 
-            alert('Login successful!');
             console.log('Login response:', res.data);
 
-            navigate('/dashboard'); // 🚀 Redirect after login
+            setAuthenticated(true);   // ✅ IMPORTANT FIX
+            navigate('/dashboard');   // ✅ Redirect
         } catch (error) {
             console.error('Login error:', error);
             alert(error.response?.data?.message || 'Login failed');
@@ -48,29 +46,27 @@ const LoginForm = () => {
                 <h2>Login to Your Account</h2>
 
                 <div className="form-group">
-                    <label htmlFor="email">Email Address</label>
+                    <label>Email Address</label>
                     <input
                         type="email"
-                        id="email"
-                        placeholder="you@example.com"
                         value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        onChange={(e) =>
+                            setFormData({ ...formData, email: e.target.value })
+                        }
                         required
                     />
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="password">Password</label>
+                    <label>Password</label>
                     <div className="password-wrapper">
                         <input
                             type={showPassword ? 'text' : 'password'}
-                            id="password"
-                            placeholder="••••••••"
                             value={formData.password}
-                            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                            onChange={(e) =>
+                                setFormData({ ...formData, password: e.target.value })
+                            }
                             required
-                            minLength={4}
-                            maxLength={12}
                         />
                         <button
                             type="button"
@@ -83,7 +79,6 @@ const LoginForm = () => {
                 </div>
 
                 <button type="submit" className="submit-btn">Login</button>
-                <p className="signup-link">Don't have an account? <a href="/auth/register">Register</a></p>
             </form>
         </div>
     );

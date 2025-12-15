@@ -14,13 +14,13 @@ const App = () => {
   const [loading, setLoading] = useState(true);
   const [authenticated, setAuthenticated] = useState(false);
 
-  // Check authentication on first load (cookie-based session check)
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/users/me', {
-          withCredentials: true
-        });
+        const res = await axios.get(
+          'http://localhost:5000/api/users/me',
+          { withCredentials: true }
+        );
         if (res.status === 200) {
           setAuthenticated(true);
         }
@@ -41,24 +41,40 @@ const App = () => {
   return (
     <Router>
       <div className="app-wrapper">
-        {authenticated && <Navbar />}
+
+        {/* Navbar should always render */}
+        <Navbar authenticated={authenticated} />
 
         <Routes>
           <Route path="/" element={<Navigate to="/auth/login" />} />
-          <Route path="/auth/login" element={<LoginForm setAuthenticated={setAuthenticated} />} />
-          <Route path="/auth/register" element={<RegisterForm />} />
+
+          <Route
+            path="/auth/login"
+            element={<LoginForm setAuthenticated={setAuthenticated} />}
+          />
+
+          <Route
+            path="/auth/register"
+            element={<RegisterForm />}
+          />
 
           {/* Protected Routes */}
           <Route
             path="/dashboard"
-            element={authenticated ? <Dashboard /> : <Navigate to="/auth/login" />}
+            element={
+              authenticated ? <Dashboard /> : <Navigate to="/auth/login" />
+            }
           />
+
           <Route
             path="/expenseform"
-            element={authenticated ? <ExpenseForm /> : <Navigate to="/auth/login" />}
+            element={
+              authenticated ? <ExpenseForm /> : <Navigate to="/auth/login" />
+            }
           />
         </Routes>
 
+        {/* Footer should also always render */}
         <Footer />
       </div>
     </Router>
